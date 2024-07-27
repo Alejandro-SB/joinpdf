@@ -9,6 +9,7 @@ import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/joinpdf/',
   plugins: [
     vue(),
     vueDevTools(),
