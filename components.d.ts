@@ -28,4 +28,7 @@ declare module 'vue' {
     Toast: typeof import('primevue/toast')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    Tooltip: typeof import('primevue/tooltip')['default']
+  }
 }

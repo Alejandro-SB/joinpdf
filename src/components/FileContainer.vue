@@ -91,7 +91,7 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
 </script>
 
 <template>
-  <div class="file-container">
+  <div class="file-container w-96">
     <PdfConfigurationModal v-model="showConfigurator" :file="selectedFile"></PdfConfigurationModal>
     <div class="file-container-header">
       <PdfContainerHeader
@@ -117,7 +117,7 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
       <div v-else>
         <div class="flex items-center justify-center flex-col">
           <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color" />
-          <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+          <p class="mt-6 mb-0">Arrastra ficheros aquí.</p>
         </div>
       </div>
     </div>

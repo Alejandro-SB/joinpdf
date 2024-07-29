@@ -4,7 +4,6 @@
   <NavigationBar></NavigationBar>
   <Toast />
   <main class="flex w-full justify-center align-center">
-    <!-- <TestFileUploader /> -->
     <FileContainer />
   </main>
 </template>

@@ -17,10 +17,11 @@ defineProps<PdfContainerHeaderProps>();
     <div class="flex gap-2">
       <Button
         @click="$emit('open')"
-        icon="pi pi-images"
+        icon="pi pi-plus"
         rounded
         outlined
         severity="secondary"
+        v-tooltip.top="'Añadir ficheros'"
       ></Button>
       <Button
         @click="$emit('clear')"
@@ -29,6 +30,7 @@ defineProps<PdfContainerHeaderProps>();
         outlined
         severity="danger"
         :disabled="!hasFiles"
+        v-tooltip.top="'Limpiar'"
       ></Button>
     </div>
     <div class="flex gap-2">
@@ -39,6 +41,7 @@ defineProps<PdfContainerHeaderProps>();
         outlined
         severity="contrast"
         :disabled="!hasFiles"
+        v-tooltip.top="'Combinar'"
       ></Button>
     </div>
   </div>
