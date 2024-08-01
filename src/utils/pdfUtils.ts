@@ -1,7 +1,12 @@
 import type { InputPdfFile } from '@/components/FileContainer.vue';
 import { PDFDocument } from 'pdf-lib';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { getPageNumbersFromDescriptor } from './pageSections';
+
+export const getTotalPages = async (file: File) => {
+  const pdfDocument = await getDocumentFromFile(file);
+
+  return pdfDocument.getPageCount();
+};
 
 export const createThumbnail = async (pdfDocument: PDFDocumentProxy) => {
   const page = await pdfDocument.getPage(1);
@@ -31,18 +36,13 @@ export const createThumbnail = async (pdfDocument: PDFDocumentProxy) => {
 export const mergeDocuments = async (inputFiles: InputPdfFile[]) => {
   const newPdf = await PDFDocument.create();
   newPdf.setProducer('joinpdf');
+  newPdf.setCreator('joinPDF');
   newPdf.setCreationDate(new Date());
 
   for (const pdfFile of inputFiles) {
-    const ab = await pdfFile.file.arrayBuffer();
-    const u8a = new Uint8Array(ab);
-    const doc = await PDFDocument.load(u8a, {
-      ignoreEncryption: true
-    });
+    const doc = await getDocumentFromFile(pdfFile.file);
 
-    const indices = pdfFile.pages
-      ? getPageNumbersFromDescriptor(pdfFile.pages)
-      : doc.getPageIndices();
+    const indices = pdfFile.descriptor?.pageIndices ?? doc.getPageIndices();
 
     const copiedPages = await newPdf.copyPages(doc, indices);
 
@@ -55,4 +55,14 @@ export const mergeDocuments = async (inputFiles: InputPdfFile[]) => {
   });
 
   return blob;
+};
+
+const getDocumentFromFile = async (file: File) => {
+  const ab = await file.arrayBuffer();
+  const u8a = new Uint8Array(ab);
+  const doc = await PDFDocument.load(u8a, {
+    ignoreEncryption: true
+  });
+
+  return doc;
 };

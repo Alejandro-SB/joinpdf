@@ -18,18 +18,14 @@ defineProps<PdfContainerHeaderProps>();
       <Button
         @click="$emit('open')"
         icon="pi pi-plus"
-        rounded
-        outlined
-        severity="secondary"
         v-tooltip.top="'Añadir ficheros'"
+        severity="info"
       ></Button>
       <Button
         @click="$emit('clear')"
         icon="pi pi-times"
-        rounded
-        outlined
-        severity="danger"
         :disabled="!hasFiles"
+        severity="danger"
         v-tooltip.top="'Limpiar'"
       ></Button>
     </div>
@@ -37,9 +33,6 @@ defineProps<PdfContainerHeaderProps>();
       <Button
         @click="$emit('merge')"
         icon="pi pi-file-export"
-        rounded
-        outlined
-        severity="contrast"
         :disabled="!hasFiles"
         v-tooltip.top="'Combinar'"
       ></Button>

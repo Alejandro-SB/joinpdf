@@ -32,24 +32,29 @@ onMounted(async () => {
     <div>
       <img :src="thumbnail" width="210" height="297" />
     </div>
-    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{
+    <span class="font-semibold text-center text-ellipsis w-48 whitespace-nowrap overflow-hidden">{{
       pdfFile.file.name
     }}</span>
     <div class="flex gap-4">
-      <Button
-        icon="pi pi-cog"
-        @click="$emit('configure', pdfFile)"
-        outlined
-        rounded
-        severity="contrast"
-      ></Button>
+      <OverlayBadge :class="{ 'hide-badge': !props.pdfFile.descriptor }">
+        <Button
+          icon="pi pi-cog"
+          @click="$emit('configure', pdfFile)"
+          raised
+          severity="warn"
+        ></Button>
+      </OverlayBadge>
       <Button
         icon="pi pi-times"
         @click="emits('remove', props.pdfFile)"
-        outlined
-        rounded
+        raised
         severity="danger"
       ></Button>
     </div>
   </div>
 </template>
+<style>
+.hide-badge .p-badge-dot {
+  display: none;
+}
+</style>

@@ -3,7 +3,7 @@
 <template>
   <NavigationBar></NavigationBar>
   <Toast />
-  <main class="flex w-full justify-center align-center">
+  <main class="flex w-full justify-center align-center px-10">
     <FileContainer />
   </main>
 </template>

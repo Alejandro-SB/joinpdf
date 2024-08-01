@@ -10,6 +10,11 @@ const icon = computed(() => (darkMode.isDark.value ? 'pi pi-moon' : 'pi pi-sun')
 <template>
   <header class="flex w-full p-4 justify-between">
     <h1 class="text-4xl">Unir PDF</h1>
-    <Button :icon="icon" @click="toggleTheme" v-tooltip.left="'Cambiar modo oscuro/claro'"></Button>
+    <Button
+      :icon="icon"
+      @click="toggleTheme"
+      v-tooltip.left="'Cambiar modo oscuro/claro'"
+      severity="contrast"
+    ></Button>
   </header>
 </template>

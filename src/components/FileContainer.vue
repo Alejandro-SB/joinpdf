@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { mergeDocuments } from '@/utils/pdfUtils';
+import { getTotalPages, mergeDocuments } from '@/utils/pdfUtils';
 import { Ok, Err, type Result } from 'pratica';
 import { useToast } from 'primevue/usetoast';
 
+type InputPdfFileDescriptor = {
+  raw: string;
+  pageIndices: number[];
+};
+
 export type InputPdfFile = {
   file: File;
-  pages?: string;
+  descriptor?: InputPdfFileDescriptor;
+  totalPages: number;
 };
 
 const highLightClassName = 'file-container-highlight';
@@ -29,10 +35,13 @@ const processFiles = (inputFiles: File[]) => {
 
   for (let validatedFile of validatedFiles) {
     validatedFile.cata({
-      Ok: (f) =>
+      Ok: async (f) => {
+        const totalPages = await getTotalPages(f);
         files.value.push({
-          file: f
-        }),
+          file: f,
+          totalPages: totalPages
+        });
+      },
       Err: (f) =>
         toast.add({
           detail: `Error in file ${f.name}`,
@@ -91,7 +100,7 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
 </script>
 
 <template>
-  <div class="file-container w-96">
+  <div class="file-container w-full">
     <PdfConfigurationModal v-model="showConfigurator" :file="selectedFile"></PdfConfigurationModal>
     <div class="file-container-header">
       <PdfContainerHeader
@@ -107,9 +116,9 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
       @dragleave="onDragLeave"
       @drop="onDrop"
     >
-      <div class="flex flex-col gap-8 pt-4" v-if="files.length > 0">
+      <div class="flex gap-8 pt-4" v-if="files.length > 0">
         <div v-if="files.length > 0">
-          <div class="flex flex-wrap gap-4">
+          <div class="flex flex-wrap gap-4 flex-row">
             <PdfFileList :inputFiles="files" @remove="onRemove" @configure="configureItem" />
           </div>
         </div>
