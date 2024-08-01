@@ -42,6 +42,7 @@ onMounted(async () => {
           @click="$emit('configure', pdfFile)"
           raised
           severity="warn"
+          v-tooltip.bottom="'Configurar'"
         ></Button>
       </OverlayBadge>
       <Button
@@ -49,6 +50,7 @@ onMounted(async () => {
         @click="emits('remove', props.pdfFile)"
         raised
         severity="danger"
+        v-tooltip.bottom="'Eliminar'"
       ></Button>
     </div>
   </div>
