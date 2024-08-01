@@ -1,6 +1,7 @@
 import type { InputPdfFile } from '@/components/FileContainer.vue';
 import { PDFDocument } from 'pdf-lib';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
+import { getPageNumbersFromDescriptor } from './pageSections';
 
 export const createThumbnail = async (pdfDocument: PDFDocumentProxy) => {
   const page = await pdfDocument.getPage(1);
@@ -38,7 +39,10 @@ export const mergeDocuments = async (inputFiles: InputPdfFile[]) => {
     const doc = await PDFDocument.load(u8a, {
       ignoreEncryption: true
     });
-    const indices = doc.getPageIndices();
+
+    const indices = pdfFile.pages
+      ? getPageNumbersFromDescriptor(pdfFile.pages)
+      : doc.getPageIndices();
 
     const copiedPages = await newPdf.copyPages(doc, indices);
 
