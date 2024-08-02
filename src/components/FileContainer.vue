@@ -54,10 +54,28 @@ const processFiles = (inputFiles: File[]) => {
 const clearFiles = () => (files.value = []);
 const openPicker = () => fileRef.value?.click();
 const mergeFiles = async () => {
+  const url = await getNewDocumentUrl();
+  window.open(url);
+};
+
+const downloadFile = async () => {
+  const url = await getNewDocumentUrl();
+
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.setAttribute('href', url);
+  a.setAttribute('download', 'combined.pdf');
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
+};
+
+const getNewDocumentUrl = async () => {
   const newPdf = await mergeDocuments(files.value);
   const url = URL.createObjectURL(newPdf);
 
-  window.open(url);
+  return url;
 };
 
 const onRemove = (file: InputPdfFile) => (files.value = files.value.filter((f) => f !== file));
@@ -108,6 +126,7 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
         @clear="clearFiles()"
         @open="openPicker()"
         @merge="mergeFiles()"
+        @download="downloadFile()"
       />
     </div>
     <div
@@ -119,7 +138,7 @@ const toFiles = (fileList: FileList | null | undefined) => [...(fileList || [])]
       <div class="flex gap-8 pt-4" v-if="files.length > 0">
         <div v-if="files.length > 0">
           <div class="flex flex-wrap gap-4 flex-row">
-            <PdfFileList :inputFiles="files" @remove="onRemove" @configure="configureItem" />
+            <PdfFileList v-model="files" @remove="onRemove" @configure="configureItem" />
           </div>
         </div>
       </div>

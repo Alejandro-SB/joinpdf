@@ -25,6 +25,19 @@ onMounted(async () => {
 
   thumbnail.value = url;
 });
+
+const totalPagesText = computed(() => {
+  const { totalPages } = props.pdfFile;
+  const selectedPages = props.pdfFile.descriptor?.pageIndices.length ?? 0;
+
+  const pageText = totalPages === 1 ? `1 página` : `${totalPages} páginas`;
+
+  if (selectedPages > 0 && selectedPages !== totalPages) {
+    return `${pageText} (${selectedPages} seleccionadas)`;
+  } else {
+    return pageText;
+  }
+});
 </script>
 
 <template>
@@ -32,9 +45,10 @@ onMounted(async () => {
     <div>
       <img :src="thumbnail" width="210" height="297" />
     </div>
-    <span class="font-semibold text-center text-ellipsis w-48 whitespace-nowrap overflow-hidden">{{
-      pdfFile.file.name
-    }}</span>
+    <span class="font-semibold text-center text-ellipsis w-48 whitespace-nowrap overflow-hidden">
+      {{ pdfFile.file.name }}
+    </span>
+    <span>{{ totalPagesText }}</span>
     <div class="flex gap-4">
       <OverlayBadge :class="{ 'hide-badge': !props.pdfFile.descriptor }">
         <Button
@@ -42,6 +56,7 @@ onMounted(async () => {
           @click="$emit('configure', pdfFile)"
           raised
           severity="warn"
+          :disabled="props.pdfFile.totalPages === 1"
           v-tooltip.bottom="'Configurar'"
         ></Button>
       </OverlayBadge>

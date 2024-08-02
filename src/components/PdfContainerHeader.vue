@@ -3,6 +3,7 @@ type PdfContainerHeaderEmits = {
   open: [];
   clear: [];
   merge: [];
+  download: [];
 };
 
 type PdfContainerHeaderProps = {
@@ -35,6 +36,12 @@ defineProps<PdfContainerHeaderProps>();
         icon="pi pi-file-export"
         :disabled="!hasFiles"
         v-tooltip.top="'Combinar'"
+      ></Button>
+      <Button
+        @click="$emit('download')"
+        icon="pi pi-download"
+        :disabled="!hasFiles"
+        v-tooltip.top="'Descargar'"
       ></Button>
     </div>
   </div>
